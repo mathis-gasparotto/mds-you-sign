@@ -1,1 +1,13 @@
 // app global css in SCSS form
+.color {
+  &-grey {
+    color: grey;
+  }
+}
+
+.thiny {
+  font-weight: 100;
+}
+.small {
+  font-size: 0.8rem;
+}

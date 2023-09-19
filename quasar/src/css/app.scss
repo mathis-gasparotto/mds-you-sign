@@ -1,17 +1,4 @@
 // app global css in SCSS form
-.color {
-  &-grey {
-    color: grey;
-  }
-}
-
-.thiny {
-  font-weight: 100;
-}
-.small {
-  font-size: 0.8rem;
-}
-
-.page-container {
-  padding: 10px 15px;
-}
+@import 'quasar.variables.scss';
+@import 'common/global';
+@import 'common/button';

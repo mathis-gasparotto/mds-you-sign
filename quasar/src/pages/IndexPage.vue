@@ -7,7 +7,7 @@
       <ul class="lessons-list">
         <li v-for="singleLesson in todayLessons" :key="singleLesson.id" class="flex lessons-item q-mb-md">
           <q-item class="lessons-item" clickable :to="`/lessons/${singleLesson.id}`">
-            <CardComponent :title="singleLesson.label" :description="`${getHours(singleLesson.startAt)} - ${getHours(singleLesson.endAt)}`" iconPath="assets/quasar-logo-vertical.svg" :checked="singleLesson.signed" />
+            <CardComponent :title="singleLesson.label" :description="`${getHours(singleLesson.startAt)} - ${getHours(singleLesson.endAt)}`" iconPath="assets/book.png" :checked="singleLesson.signed" />
           </q-item>
         </li>
       </ul>

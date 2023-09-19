@@ -1,0 +1,13 @@
+{
+  "name": "mds-you-sign",
+  "version": "0.0.1",
+  "description": "First MDS Project",
+  "author": "Mathis-Gasparotto <78808807+Mathis-Gasparotto@users.noreply.github.com>",
+  "private": true,
+  "dependencies": {
+    "@capacitor/android": "^5.4.0",
+    "@capacitor/app": "^5.0.0",
+    "@capacitor/cli": "^5.0.0",
+    "@capacitor/core": "^5.0.0"
+  }
+}

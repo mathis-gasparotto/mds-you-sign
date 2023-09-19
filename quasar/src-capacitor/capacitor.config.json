@@ -1,0 +1,9 @@
+{
+  "appId": "org.capacitor.quasar.app",
+  "appName": "You Sign",
+  "webDir": "www",
+  "server": {
+    "androidScheme": "https",
+    "url": "http://172.29.128.1:8080"
+  }
+}

@@ -28,7 +28,13 @@ const routes = [
         path: "lessons/:id",
         name: "singleLesson",
         component: () => import("pages/SingleLessonPage.vue")
+      },
+      {
+        path: '/signeScan',
+        name: 'signeScan',
+        component: () => import('pages/SigneScanPage.vue')
       }
+
     ]
   },
 

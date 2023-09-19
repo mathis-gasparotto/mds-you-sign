@@ -1,13 +1,13 @@
 <template>
-  <q-page class="flex flex-center column">
+  <q-page class="flex page-container column">
     <h4>Bonjour Jade</h4>
     <q-spinner-gears size="100px" color="primary" v-if="loading"></q-spinner-gears>
     <div v-else>
       <h6>Aujourd'hui <span class="small color-grey">({{ todayLessons.length }})</span></h6>
       <ul class="lessons-list">
         <li v-for="singleLesson in todayLessons" :key="singleLesson.id" class="flex lessons-item q-mb-md">
-          <q-item clickable :to="`/lessons/${singleLesson.id}`">
-            <CardComponent :title="singleLesson.label" :description="`${getHours(singleLesson.startAt)} - ${getHours(singleLesson.endAt)}`" iconPath="assets/quasar-logo-vertical.svg" />
+          <q-item class="lessons-item" clickable :to="`/lessons/${singleLesson.id}`">
+            <CardComponent :title="singleLesson.label" :description="`${getHours(singleLesson.startAt)} - ${getHours(singleLesson.endAt)}`" iconPath="assets/quasar-logo-vertical.svg" :checked="singleLesson.signed" />
           </q-item>
         </li>
       </ul>
@@ -72,6 +72,9 @@ export default {
       list-style: none;
       padding: 0;
       margin: 0;
+    }
+    &-item {
+      width: 100%;
     }
   }
 </style>

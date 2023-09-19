@@ -6,12 +6,9 @@
       <h6>Aujourd'hui <span class="small color-grey">({{ todayLessons.length }})</span></h6>
       <ul class="lessons-list">
         <li v-for="singleLesson in todayLessons" :key="singleLesson.id" class="flex lessons-item q-mb-md">
-          <img class="lessons-img q-mr-sm" src="~assets/quasar-logo-vertical.svg" alt="">
-          <div class="lesson-content">
-            <p>{{ singleLesson.label }}</p>
-            <p class="color-grey">{{ `${getHours(singleLesson.startAt)} - ${getHours(singleLesson.endAt)}` }}</p>
-          </div>
-          <q-icon name="check" color="green" size="md" class="q-ml-xl" v-if="singleLesson.signed"></q-icon>
+          <q-item clickable :to="`/lessons/${singleLesson.id}`">
+            <CardComponent :title="singleLesson.label" :description="`${getHours(singleLesson.startAt)} - ${getHours(singleLesson.endAt)}`" iconPath="assets/quasar-logo-vertical.svg" />
+          </q-item>
         </li>
       </ul>
     </div>
@@ -19,8 +16,13 @@
 </template>
 
 <script>
+import CardComponent from 'components/CardComponent.vue'
+
 export default {
   name: 'IndexPage',
+  components: {
+    CardComponent
+  },
   data () {
     return {
       loading: true,
@@ -70,15 +72,6 @@ export default {
       list-style: none;
       padding: 0;
       margin: 0;
-    }
-    &-img {
-      width: 50px;
-    }
-    &-item {
-      align-items: center;
-      p {
-        margin: 0 0 5px 0;
-      }
     }
   }
 </style>

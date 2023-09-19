@@ -1,5 +1,5 @@
 <template>
-  <q-page class="flex flex-center column">
+  <q-page class="flex page-container column">
     <!-- Bouton de retour -->
     <q-btn
       class="q-mb-xl custom-back-button"
@@ -15,7 +15,7 @@
     </ul>
     <h6>Description</h6>
     <p>MBA1 Développeur Full-Stack</p>
-    <router-link :to="{ name: 'signeScan' }">""
+    <router-link :to="{ name: 'signeScan' }">
       <q-btn class="q-mt-xl" label="Signe & Scan" />
     </router-link>
   </q-page>
@@ -52,8 +52,8 @@ export default {
     }
   },
   created() {
-      
-    
+
+
     this.loading = false
     // fetch('https://jsonplaceholder.typicode.com/posts')
     //   .then((response) => response.json())

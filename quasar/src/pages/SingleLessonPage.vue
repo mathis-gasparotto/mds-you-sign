@@ -2,7 +2,7 @@
   <q-page class="flex page-container column">
     <!-- Bouton de retour -->
     <q-btn
-      class="q-mb-xl custom-back-button"
+      class="q-mb-xl"
       @click="$router.go(-1)"
       label="Retour"
     />
@@ -15,7 +15,7 @@
     </ul>
     <h6>Description</h6>
     <p>MBA1 Développeur Full-Stack</p>
-    <router-link :to="{ name: 'signeScan' }">
+    <router-link :to="{ name: 'signe' }">
       <q-btn class="q-mt-xl" label="Signe & Scan" />
     </router-link>
   </q-page>

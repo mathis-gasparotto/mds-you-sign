@@ -39,6 +39,11 @@ const routes = [
         path: "lessons/:id",
         name: "singleLesson",
         component: () => import("pages/SingleLessonPage.vue")
+      },
+      {
+        path: "signe/:id",
+        name: "signe",
+        component: () => import("pages/SignePage.vue")
       }
     ]
   },

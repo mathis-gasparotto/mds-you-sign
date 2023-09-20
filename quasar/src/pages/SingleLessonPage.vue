@@ -52,8 +52,6 @@ export default {
     }
   },
   created() {
-
-
     this.loading = false
     // fetch('https://jsonplaceholder.typicode.com/posts')
     //   .then((response) => response.json())

@@ -11,6 +11,17 @@ const routes = [
     ],
   },
   {
+    path: "/no-navbar",
+    component: () => import("layouts/NoNavbarLayout.vue"),
+    children: [
+      {
+        path: 'lessons/:id/scan',
+        name: 'signeScan',
+        component: () => import('pages/SigneScanPage.vue')
+      }
+    ],
+  },
+  {
     path: "/",
     component: () => import("layouts/MainLayout.vue"),
     children: [
@@ -28,13 +39,7 @@ const routes = [
         path: "lessons/:id",
         name: "singleLesson",
         component: () => import("pages/SingleLessonPage.vue")
-      },
-      {
-        path: '/signeScan',
-        name: 'signeScan',
-        component: () => import('pages/SigneScanPage.vue')
       }
-
     ]
   },
 

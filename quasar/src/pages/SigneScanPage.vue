@@ -1,39 +1,38 @@
 <template>
-    <q-page class="flex page-container">
-      <qrcode-stream :camera="camera" @decode="onDecode"></qrcode-stream>
+    <q-page class="flex">
+      <qrcode-stream class="qrcode-reader" @detect="onDetect"></qrcode-stream>
     </q-page>
   </template>
 
   <script>
   import { QrcodeStream } from 'vue-qrcode-reader'
+  import { useRoute } from 'vue-router'
 
   export default {
     name: 'SigneScan',
     components: {
       QrcodeStream
     },
-    data () {
+    setup () {
+      const route = useRoute()
+
       return {
-        camera: 'auto',
-        showCamera: true,
-        result: ''
+        route
       }
     },
     methods: {
-      async onDecode (content) {
-        this.result = content
-        console.log(content)
-        this.turnCameraOff()
-      },
-      turnCameraOn () {
-        this.camera = 'auto'
-        this.showCamera = true
-      },
-
-      turnCameraOff () {
-        this.camera = 'off'
-        this.showCamera = false
+      onDetect (content) {
+        console.log('Decoded', content[0].rawValue)
+        this.$router.push({ name: 'singleLesson', params: { id: this.route.params.id } })
       }
     }
   }
-  </script>
+</script>
+
+<style lang="scss" scoped>
+.qrcode-reader {
+  width: 100vw !important;
+  height: 100vh !important;
+  object-fit: cover;
+}
+</style>

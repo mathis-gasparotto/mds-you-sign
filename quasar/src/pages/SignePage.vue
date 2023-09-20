@@ -10,7 +10,7 @@
       <p>Veuillez signer dans le cadre</p>
       <div class="signature-container">
         <div class="sign-here">Signez ici</div>
-        <VueSignaturePad width="100vw" height="200px" ref="signaturePad" />
+        <VueSignaturePad width="100%" height="200px" ref="signaturePad" />
         
     </div>
       <div class="contain-btn">
@@ -78,7 +78,6 @@ export default {
     position: relative;
     background-color: rgba(221, 221, 221, 0.5);
     border: 1px solid #000;
-    margin-left: -17px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -92,6 +91,8 @@ export default {
 }
 .suppr {
     margin: 10px;
+    margin-left: -10px;
+    margin-right: -10px;
 }
 
 .save {

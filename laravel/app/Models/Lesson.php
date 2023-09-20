@@ -16,8 +16,8 @@ class Lesson extends Model
         'sign_code',
         'id_user_teacher'
     ];
-    public function user()
+    public function users()
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(User::class,'lesson_students', 'lesson_id','user_id');
     }
 }

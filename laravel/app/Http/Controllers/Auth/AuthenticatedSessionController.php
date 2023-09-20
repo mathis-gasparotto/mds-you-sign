@@ -47,6 +47,7 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->invalidate();
         session()->forget('role');
+        session()->forget('id');
         $request->session()->regenerateToken();
 
         return redirect('/');

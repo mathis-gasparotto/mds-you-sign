@@ -1,6 +1,8 @@
 {
   "appId": "org.capacitor.quasar.app",
   "appName": "You Sign",
+  "bundledWebRuntime": false,
+  "npmClient": "npm",
   "webDir": "www",
   "server": {
     "androidScheme": "https",

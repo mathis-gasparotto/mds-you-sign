@@ -13,6 +13,7 @@
     "build": "quasar build"
   },
   "dependencies": {
+    "@capacitor-community/barcode-scanner": "^4.0.1",
     "@ionic/pwa-elements": "^3.2.2",
     "@quasar/extras": "^1.0.0",
     "core-js": "^3.6.5",

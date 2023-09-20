@@ -20,7 +20,7 @@ Route::get('/', function () {
 });
 
 Route::prefix('/dashboard')->controller(CoursesController::class)->group(function () {
-    Route::get('/', 'show')->name('dashboard')->middleware(['auth','verified','teacher']);
+    Route::get('/', 'show')->name('dashboard')->middleware(['auth','verified']);
     Route::get('/course', 'showCourse')->middleware(['auth','verified','teacher'])->name('course');
 });
 

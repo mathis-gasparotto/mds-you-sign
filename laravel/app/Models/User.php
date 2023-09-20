@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Models\Vehicle\OptionVehicle;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -24,7 +25,10 @@ class User extends Authenticatable
         'email',
         'password',
     ];
-
+    public function lesson()
+    {
+        return $this->belongsToMany(Lesson::class);
+    }
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -45,3 +49,4 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 }
+

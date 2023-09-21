@@ -3,6 +3,6 @@
     background-color: $secondary;
   }
   &-disabled {
-    background-color: #97b7b4;
+    background-color: rgba($color: $secondary, $alpha: .8);
   }
 }

@@ -52,6 +52,7 @@
                                     </option>
                                 @endforeach
                             </select>
+                            <x-input-error :messages="$errors->lessonCreation->get('user_id')" class="mt-2" />
                         </div>
                         <div>
                             <x-text-input
@@ -93,10 +94,16 @@
             </tr>
             </thead>
             @foreach( $lessons as $lesson)
+                @php
+                    $showModalLesson = $errors->lessonUpdate->isNotEmpty() &&  old('id') == $lesson->id;
+                     $showModalLessonDelete = $errors->userDeletion->isNotEmpty() &&  old('id') == $lesson->id;
+                @endphp
+
                 <tbody class="py-12">
                 <tr class="text-left py-">
                     <td class="text-left">
                         {{$lesson->label}}
+
                     </td>
                     <td class="text-ledt py-5">
                         de {{$lesson->start_at}} à {{$lesson->end_at}}
@@ -118,7 +125,7 @@
                                     <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
                                 </svg>
                             </x-danger-button>
-                            <x-modal name="confirm-lesson-update-{{$lesson->id}}" :show="$errors->lessonUpdate->isNotEmpty()" focusable>
+                            <x-modal name="confirm-lesson-update-{{$lesson->id}}" :show="$showModalLesson" focusable>
                                 <div class="p-3">
                                     <header>
                                         <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
@@ -155,11 +162,23 @@
                                         </div>
                                         <div>
                                             <x-input-label for="user_id" :value="__('Professeur')" />
-                                            <select name="user_id" id="user_id" class="border-gray-300 dark:border-gray-700 block mt-1 w-full dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
-                                                <option disabled selected :value="" > Selectioner une option</option>
+                                            <select required name="user_id"  id="user_id" class="border-gray-300 dark:border-gray-700 block mt-1 w-full dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
+
                                                 @foreach($teachers as $teacher)
-                                                    <option value="{{$teacher->id}}">
+                                                    <option value="{{$teacher->id}}" {{ $teacher->id == $lesson->teacher->id ? 'selected' : '' }}>
                                                         {{$teacher->first_name}}&nbsp;{{$teacher->last_name}}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <x-input-label for="classe_id" :value="__('Classe associée')" />
+                                            <select name="classe_id" id="classe_id" class="border-gray-300 dark:border-gray-700 block mt-1 w-full dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">@
+                                                @foreach($classes as $classe)
+                                                    <option value="{{$classe->id}}"
+{{--                                                        {{ $classe->id == $user->classe_id ? 'selected' : '' }}--}}
+                                                    >
+                                                        {{$classe->name}}
                                                     </option>
                                                 @endforeach
                                             </select>
@@ -197,7 +216,7 @@
                             > <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
                                     <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z"/>
                                 </svg></x-danger-button>
-                            <x-modal name="confirm-lesson-deletion-{{$lesson->id}}" :show="$errors->userDeletion->isNotEmpty()" focusable>
+                            <x-modal name="confirm-lesson-deletion-{{$lesson->id}}" :show="$showModalLessonDelete" focusable>
                                 <form method="post" action="{{ route('lesson-creator.destroy') }}" class="p-6">
                                     @csrf
                                     @method('delete')

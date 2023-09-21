@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Classe;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
@@ -21,7 +22,9 @@ class RegisteredUserController extends Controller
      */
     public function create(): View
     {
-        return view('auth.register-account');
+        $classes = Classe::orderBy('name')->get();
+        return view('register-account', ['classes' => $classes]);
+
     }
 
     /**
@@ -44,11 +47,14 @@ class RegisteredUserController extends Controller
             'last_name' => $request->last_name,
             'role' => $request->role,
             'email' => $request->email,
+            'classe_id' => $request->role == 'student'? $request->classe_id : null,
             'password' => Hash::make($request->password),
         ]);
 
        // event(new Registered($user));
        // Auth::login($user);
-        return view('register-account');
+        $classes = Classe::orderBy('name')->get();
+        return view('register-account', ['classes' => $classes]);
+
     }
 }

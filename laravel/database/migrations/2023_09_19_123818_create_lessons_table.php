@@ -15,8 +15,8 @@ return new class extends Migration
         Schema::create('lessons', function (Blueprint $table) {
             $table->engine = 'InnoDB';
             $table->id();
-            $table->date('start_at');
-            $table->date('end_at');
+            $table->dateTime('start_at');
+            $table->dateTime('end_at');
             $table->string('label');
             $table->string('room');
             $table->integer('signed_code');

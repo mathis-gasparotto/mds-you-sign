@@ -24,10 +24,9 @@ class UserFactory extends Factory
             'last_name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
-            'role' => 'student',
+            'role' => 'admin',
             'password' =>  Hash::make('password'), // password
             'remember_token' => Str::random(10),
-            //'classe_id' =>  function () {return Classe::inRandomOrder()->first()->id;}
         ];
     }
 
@@ -40,10 +39,18 @@ class UserFactory extends Factory
             'role' => 'teacher',
         ]);
     }
-    public function ADMIN(): static
+    public function admin(): static
     {
         return $this->state(fn (array $attributes) => [
             'role' => 'admin',
+        ]);
+    }
+
+    public function student(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'role' => 'student',
+            'classe_id' =>  function () {return Classe::all()->random()->id;}
         ]);
     }
 }

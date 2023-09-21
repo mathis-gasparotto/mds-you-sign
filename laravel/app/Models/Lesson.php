@@ -14,10 +14,15 @@ class Lesson extends Model
         'label',
         'room',
         'sign_code',
-        'id_user_teacher'
+        'user_id'
+
     ];
     public function users()
     {
         return $this->belongsToMany(User::class,'lesson_students', 'lesson_id','user_id');
+    }
+    public function teacher()
+    {
+        return $this->belongsTo(User::class,'user_id');
     }
 }

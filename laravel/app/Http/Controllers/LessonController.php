@@ -22,16 +22,14 @@ class LessonController extends Controller
 
     public function future(Request $request): string
     {
-        $user = User::find($request->user()->id);
         $now = new \DateTime();
         $now->setTimezone(new \DateTimeZone('Europe/Paris'));
-        if ($user->role === 'student') {
-            return Lesson::with('teacher')->where('classe_id', '=', $user->classe_id)->whereDate('start_at', '>', $now->format('Y-m-d'))->orderBy('start_at', 'desc')->get()->toJson();
-        } elseif ($user->role === 'teacher') {
-            return Lesson::with('teacher')->where('teacher_id', '=', $user->id)->whereDate('start_at', '>', $now->format('Y-m-d'))->orderBy('start_at', 'desc')->get()->toJson();
-        } else {
-            return Lesson::with('teacher')->whereDate('start_at', '>', $now->format('Y-m-d'))->orderBy('start_at', 'desc')->get()->toJson();
+        $lessonStudents = LessonStudent::where('user_id', '=', $request->user()->id)->get();
+        $lessonIds = [];
+        foreach ($lessonStudents as $lessonStudent) {
+            $lessonIds[] = $lessonStudent->lesson_id;
         }
+        return Lesson::with('teacher')->whereDate('start_at', '>', $now->format('Y-m-d'))->orderBy('start_at', 'desc')->findMany($lessonIds)->toJson();
     }
 
     public function getItem(Request $request, $id): string
@@ -53,17 +51,16 @@ class LessonController extends Controller
 
     public function today(Request $request): string
     {
-//        $user = User::where('role', '=', 'student')->first();
-//        $user = $request->user();
-        $user = User::find($request->user()->id);
         $now = new \DateTime();
         $now->setTimezone(new \DateTimeZone('Europe/Paris'));
-        if ($user->role === 'student') {
-            return Lesson::with('teacher')->where('classe_id', '=', $user->classe_id)->whereDate('start_at', '=', $now->format('Y-m-d'))->orderBy('start_at', 'desc')->get()->toJson();
-        } elseif ($user->role === 'teacher') {
-            return Lesson::with('teacher')->where('teacher_id', '=', $user->id)->whereDate('start_at', '=', $now->format('Y-m-d'))->orderBy('start_at', 'desc')->get()->toJson();
+
+        $lessonStudents = LessonStudent::where('user_id', '=', $request->user()->id)->get();
+        $lessonIds = [];
+        foreach ($lessonStudents as $lessonStudent) {
+            $lessonIds[] = $lessonStudent->lesson_id;
         }
-        return Lesson::with('teacher')->whereDate('start_at', '=', $now->format('Y-m-d'))->orderBy('start_at', 'desc')->get()->toJson();
+        return Lesson::with('teacher')->whereDate('start_at', '=', $now->format('Y-m-d'))->orderBy('start_at', 'desc')->findMany($lessonIds)->toJson();
+
     }
 
     public function destroy(Request $request): View{

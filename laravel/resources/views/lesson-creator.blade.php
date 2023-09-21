@@ -55,6 +55,18 @@
                             <x-input-error :messages="$errors->lessonCreation->get('user_id')" class="mt-2" />
                         </div>
                         <div>
+                            <x-input-label for="classe_id" :value="__('Classe associée')" />
+                            <select name="classe_id" id="classe_id" class="border-gray-300 dark:border-gray-700 block mt-1 w-full dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">@
+                                @foreach($classes as $classe)
+                                    <option value="{{$classe->id}}"
+                                        {{--                                                        {{ $classe->id == $user->classe_id ? 'selected' : '' }}--}}
+                                    >
+                                        {{$classe->name}}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div>
                             <x-text-input
                                 id="password"
                                 name="password"
@@ -112,6 +124,7 @@
                         {{$lesson->room}}
                     </td>
                     <td class="text-ledt py-5">
+                        {{dd($lesson->teacher)}}
                        {{$lesson->teacher->first_name}} &nbsp; {{$lesson->teacher->last_name}}
                     </td>
                     <td class="text-center py-5">

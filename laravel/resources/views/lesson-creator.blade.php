@@ -29,12 +29,12 @@
                         </div>
                         <div>
                             <x-input-label for="start_at" :value="__('Début')" />
-                            <x-text-input id="start_at" name="start_at" type="date" class="mt-1 block w-full"  required autofocus autocomplete="start_at" />
+                            <x-text-input id="start_at" name="start_at" type="datetime-local" class="mt-1 block w-full"  required autofocus autocomplete="start_at" />
                             <x-input-error class="mt-2" :messages="$errors->get('start_at')" />
                         </div>
                         <div>
                             <x-input-label for="end_at" :value="__('Fin')" />
-                            <x-text-input id="end_at" name="end_at" type="date" class="mt-1 block w-full" required autofocus autocomplete="end_at" />
+                            <x-text-input id="end_at" name="end_at" type="datetime-local" class="mt-1 block w-full" required autofocus autocomplete="end_at" />
                             <x-input-error class="mt-2" :messages="$errors->get('end_at')" />
                         </div>
                         <div>
@@ -54,18 +54,18 @@
                             </select>
                             <x-input-error :messages="$errors->lessonCreation->get('user_id')" class="mt-2" />
                         </div>
-                        <div>
-                            <x-input-label for="classe_id" :value="__('Classe associée')" />
-                            <select name="classe_id" id="classe_id" class="border-gray-300 dark:border-gray-700 block mt-1 w-full dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">@
-                                @foreach($classes as $classe)
-                                    <option value="{{$classe->id}}"
-                                        {{--                                                        {{ $classe->id == $user->classe_id ? 'selected' : '' }}--}}
-                                    >
-                                        {{$classe->name}}
-                                    </option>
-                                @endforeach
-                            </select>
-                        </div>
+{{--                        <div>--}}
+{{--                            <x-input-label for="classe_id" :value="__('Classe associée')" />--}}
+{{--                            <select name="classe_id" id="classe_id" class="border-gray-300 dark:border-gray-700 block mt-1 w-full dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">@--}}
+{{--                                @foreach($classes as $classe)--}}
+{{--                                    <option value="{{$classe->id}}"--}}
+{{--                                        --}}{{--                                                        {{ $classe->id == $user->classe_id ? 'selected' : '' }}--}}
+{{--                                    >--}}
+{{--                                        {{$classe->name}}--}}
+{{--                                    </option>--}}
+{{--                                @endforeach--}}
+{{--                            </select>--}}
+{{--                        </div>--}}
                         <div>
                             <x-text-input
                                 id="password"
@@ -124,7 +124,7 @@
                         {{$lesson->room}}
                     </td>
                     <td class="text-ledt py-5">
-                        {{dd($lesson->teacher)}}
+
                        {{$lesson->teacher->first_name}} &nbsp; {{$lesson->teacher->last_name}}
                     </td>
                     <td class="text-center py-5">
@@ -160,12 +160,12 @@
                                         </div>
                                         <div>
                                             <x-input-label for="start_at" :value="__('Début')" />
-                                            <x-text-input id="start_at" name="start_at" type="date" class="mt-1 block w-full" :value="old('start_at', $lesson->start_at)" required autofocus autocomplete="start_at" />
+                                            <x-text-input id="start_at" name="start_at" type="datetime-local" class="mt-1 block w-full" :value="old('start_at', $lesson->start_at)" required autofocus autocomplete="start_at" />
                                             <x-input-error class="mt-2" :messages="$errors->get('start_at')" />
                                         </div>
                                         <div>
                                             <x-input-label for="end_at" :value="__('Fin')" />
-                                            <x-text-input id="end_at" name="end_at" type="date" class="mt-1 block w-full" :value="old('end_at', $lesson->end_at)" required autofocus autocomplete="end_at" />
+                                            <x-text-input id="end_at" name="end_at" type="datetime-local" class="mt-1 block w-full" :value="old('end_at', $lesson->end_at)" required autofocus autocomplete="end_at" />
                                             <x-input-error class="mt-2" :messages="$errors->get('end_at')" />
                                         </div>
                                         <div>

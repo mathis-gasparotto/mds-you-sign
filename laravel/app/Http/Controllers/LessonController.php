@@ -74,7 +74,8 @@ class LessonController extends Controller
         $lesson_to_delete->delete();
         $lessons = Lesson::with('teacher')->orderBy('label')->get();
         $teachers = User::where('role','teacher')->orderBy('first_name')->get();
-        return view('lesson-creator', ['lessons' => $lessons,'teachers' =>$teachers ]);
+        $classes = Classe::orderBy('name')->get();
+        return view('lesson-creator', ['lessons' => $lessons,'teachers' =>$teachers ,'classes' => $classes]);
     }
     public function update(Request $request): View{
 

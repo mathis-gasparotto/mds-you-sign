@@ -1,5 +1,8 @@
 <x-app-layout>
+    @if(  $users->count() > 0)
     <x-slot name="header">
+
+
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
             {{ $users[0]->lesson->label }}
         </h2>
@@ -81,4 +84,5 @@
             </div>
         </div>
     </div>
+    @endif
 </x-app-layout>

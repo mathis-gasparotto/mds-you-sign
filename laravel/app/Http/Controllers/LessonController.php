@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LessonRequest;
 use App\Models\Classe;
 use App\Models\Lesson;
 use App\Models\LessonStudent;
@@ -15,7 +16,8 @@ class LessonController extends Controller
     public function show(): View{
         $lessons = Lesson::with('teacher')->orderBy('label')->get();
         $teachers = User::where('role','teacher')->orderBy('first_name')->get();
-        return view('lesson-creator', ['lessons' => $lessons,'teachers' =>$teachers ]);
+        $classes = Classe::orderBy('name')->get();
+        return view('lesson-creator', ['lessons' => $lessons,'teachers' =>$teachers ,'classes' => $classes]);
     }
 
     public function future(Request $request): string
@@ -75,19 +77,50 @@ class LessonController extends Controller
         return view('lesson-creator', ['lessons' => $lessons,'teachers' =>$teachers ]);
     }
     public function update(Request $request): View{
+
         $request->validateWithBag('lessonUpdate', [
             'password' => ['required', 'current_password'],
         ]);
+
+        $class_id_to_associate = $request->classe_id;
+      //  dd($class_id_to_associate);
+        $users_associated_to_class = User::where('classe_id',$class_id_to_associate)->get();
+       // dd($users_associated_to_class);
+        foreach ($users_associated_to_class as $user_associated_to_class){
+         $user_lesson_students = LessonStudent::where('user_id',$user_associated_to_class->id)->get();
+            //dd($user_lesson_students);
+         if( $user_lesson_students->isNotEmpty()){
+            dd('pas ok');
+            foreach ($user_lesson_students as $user_lesson_student){
+                //dd($user_lesson_student);
+                $user_lesson_student->update(['lesson_id' => $request->id]);
+
+            }
+
+         }else{
+
+             $user_lesson_student = LessonStudent::create([
+                 'signed' => false,
+                 'user_id' => $user_associated_to_class->id,
+                 'lesson_id' => $request->id,
+                 'created_at' => now(),
+                 'updated_at' => now(),
+             ]);
+         }
+        }
+
         $lesson_to_update = Lesson::find($request->id);
         $lesson_to_update->update(['label' => $request->label, 'start_at' => $request->start_at,'end_at' => $request->end_at,'room' => $request->room,'teacher_id' => $request->teacher_id, 'updated_at' => now()]);
         $lesson_to_update->save();
         $lessons = Lesson::with('teacher')->orderBy('label')->get();
         $teachers = User::where('role','teacher')->orderBy('first_name')->get();
-        return view('lesson-creator', ['lessons' => $lessons,'teachers' =>$teachers ]);
+        $classes = Classe::orderBy('name')->get();
+        return view('lesson-creator', ['lessons' => $lessons,'teachers' =>$teachers ,'classes' => $classes]);
     }
     public function create(Request $request){
         $request->validateWithBag('lessonCreation', [
             'password' => ['required', 'current_password'],
+            'user_id' => ['required']
         ]);
         $newLesson = new Lesson;
 
@@ -103,7 +136,8 @@ class LessonController extends Controller
 
         $lessons = Lesson::with('teacher')->orderBy('label')->get();
         $teachers = User::where('role','teacher')->orderBy('first_name')->get();
-        return view('lesson-creator', ['lessons' => $lessons,'teachers' =>$teachers ]);
+        $classes = Classe::orderBy('name')->get();
+        return view('lesson-creator', ['lessons' => $lessons,'teachers' =>$teachers ,'classes' => $classes]);
 
     }
 }

@@ -24,6 +24,17 @@
                 <option value="student">Étudiant</option>
             </select>
         <x-input-error :messages="$errors->get('role')" class="mt-2" />
+            <x-input-label for="classe_id" :value="__('Classe')" />
+            <select name="classe_id" id="classe_id" class="border-gray-300 dark:border-gray-700 block mt-1 w-full dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
+                <option value="">Aucunes</option>
+                @foreach($classes as $classe)
+                    <option value="{{$classe->id}}" >
+                        {{$classe->name}}&nbsp;
+                    </option>
+                @endforeach
+
+            </select>
+            <x-input-error :messages="$errors->get('classe_id')" class="mt-2" />
         </div>
 
 

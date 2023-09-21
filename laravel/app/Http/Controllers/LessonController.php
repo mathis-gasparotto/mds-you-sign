@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Classe;
 use App\Models\Lesson;
+use App\Models\LessonStudent;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
@@ -16,15 +18,50 @@ class LessonController extends Controller
         return view('lesson-creator', ['lessons' => $lessons,'teachers' =>$teachers ]);
     }
 
-    public function index(): string
+    public function future(Request $request): string
     {
-        return Lesson::with('teacher')->orderBy('startAt')->get()->toJson(JSON_PRETTY_PRINT);
+        $user = User::find($request->user()->id);
+        $now = new \DateTime();
+        $now->setTimezone(new \DateTimeZone('Europe/Paris'));
+        if ($user->role === 'student') {
+            return Lesson::with('teacher')->where('classe_id', '=', $user->classe_id)->whereDate('start_at', '>', $now->format('Y-m-d'))->orderBy('start_at', 'desc')->get()->toJson();
+        } elseif ($user->role === 'teacher') {
+            return Lesson::with('teacher')->where('teacher_id', '=', $user->id)->whereDate('start_at', '>', $now->format('Y-m-d'))->orderBy('start_at', 'desc')->get()->toJson();
+        } else {
+            return Lesson::with('teacher')->whereDate('start_at', '>', $now->format('Y-m-d'))->orderBy('start_at', 'desc')->get()->toJson();
+        }
     }
 
-    public function meToday(): string
+    public function getItem(Request $request, $id): string
     {
-        $userClasse = auth()->user()->getClasse();
-        return Lesson::with('teacher')->where()->orderBy('startAt')->get()->toJson(JSON_PRETTY_PRINT);
+        $lesson = Lesson::find($id);
+        if(!$lesson) {
+            return response()->json([
+                'message' => 'Lesson not found'
+            ], 404);
+        }
+        $classe = Classe::find($lesson->classe_id);
+        $teacher = User::find($lesson->teacher_id);
+        $signed = LessonStudent::where('lesson_id', '=', $lesson->id)->where('user_id', '=', $request->user()->id)->first()->signed;
+        $lesson->teacher = $teacher;
+        $lesson->classe = $classe;
+        $lesson->signed = $signed;
+        return $lesson->toJson();
+    }
+
+    public function today(Request $request): string
+    {
+//        $user = User::where('role', '=', 'student')->first();
+//        $user = $request->user();
+        $user = User::find($request->user()->id);
+        $now = new \DateTime();
+        $now->setTimezone(new \DateTimeZone('Europe/Paris'));
+        if ($user->role === 'student') {
+            return Lesson::with('teacher')->where('classe_id', '=', $user->classe_id)->whereDate('start_at', '=', $now->format('Y-m-d'))->orderBy('start_at', 'desc')->get()->toJson();
+        } elseif ($user->role === 'teacher') {
+            return Lesson::with('teacher')->where('teacher_id', '=', $user->id)->whereDate('start_at', '=', $now->format('Y-m-d'))->orderBy('start_at', 'desc')->get()->toJson();
+        }
+        return Lesson::with('teacher')->whereDate('start_at', '=', $now->format('Y-m-d'))->orderBy('start_at', 'desc')->get()->toJson();
     }
 
     public function destroy(Request $request): View{

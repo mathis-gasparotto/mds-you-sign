@@ -11,6 +11,8 @@ class AdminMiddleware
     {
         if (Auth::check() && Auth::user()->role === 'admin') {
             return $next($request);
+        } elseif (!Auth::check()) {
+            return redirect('/login');
         }
 
         return redirect('/')->with('error', 'Accès interdit.');

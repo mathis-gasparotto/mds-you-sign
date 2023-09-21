@@ -21,8 +21,8 @@ class LessonFactory extends Factory
     public function definition(): array
     {
         return [
-            'start_at' => fake()->date(),
-            'end_at' => fake()->date(),
+            'start_at' => fake()->dateTime(),
+            'end_at' => fake()->dateTime(),
             'label' => fake()->city,
             'room' => random_int(1,10),
             'signed_code' => false,

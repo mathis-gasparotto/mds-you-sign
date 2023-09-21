@@ -3,6 +3,9 @@
     <h4>Bonjour Jade</h4>
     <q-spinner-gears size="100px" color="primary" v-if="loading"></q-spinner-gears>
     <div v-else>
+      <router-link :to="{ name: 'justifierAbsence' }">
+        <q-btn class="q-mt-xl save btn-abs" label="Justifier une absence" />
+      </router-link>
       <h6>Aujourd'hui <span class="small color-grey">({{ todayLessons.length }})</span></h6>
       <ul class="lessons-list">
         <li v-for="singleLesson in todayLessons" :key="singleLesson.id" class="flex lessons-item q-mb-md">
@@ -77,4 +80,10 @@ export default {
       width: 100%;
     }
   }
+  .btn-abs {
+    margin-top: 10px;
+    color: black;
+    padding: 7px 7vw;
+    background-color: rgb(226, 226, 0);
+}
 </style>

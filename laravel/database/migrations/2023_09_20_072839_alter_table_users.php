@@ -14,7 +14,7 @@ return new class extends Migration
         //
         Schema::table('users', function (Blueprint $table) {
             $table->engine = 'InnoDB';
-            $table->foreignIdFor(\App\Models\Classe::class)->nullable()->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(\App\Models\Classe::class)->nullable()->constrained();
         });
     }
 

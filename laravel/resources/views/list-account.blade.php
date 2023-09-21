@@ -14,6 +14,10 @@
             </thead>
 
             @foreach( $users as $user)
+                @php
+                     $showModalUserDelete = $errors->userDeletion->isNotEmpty() &&  old('id') == $user->id;
+                     $showModalUserUpdate = $errors->userUpdate->isNotEmpty() &&  old('id') == $user->id;
+                @endphp
                 <tbody>
                 <tr class="text-left">
                     <td class="text-left">
@@ -28,7 +32,8 @@
                         @endif
                     </td>
                     <td class="text-center">
-                       <!--- <button class="hidden">
+
+                       <button >
 
                             <x-danger-button
                                 x-data=""
@@ -39,7 +44,8 @@
                                     <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
                                 </svg>
                             </x-danger-button>
-                            <x-modal name="confirm-user-update-{{$user->id}}" :show="$errors->userDeletion->isNotEmpty()" focusable>
+                            <x-modal name="confirm-user-update-{{$user->id}}" :show="$showModalUserUpdate" focusable>
+                                <div class="p-3">
                                 <header>
                                     <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
                                         {{ __('Informations du profile') }}
@@ -56,37 +62,44 @@
                                     @method('patch')
 
                                     <div>
+
+                                        <x-text-input id="id" name="id" type="text" class="mt-1 block w-full hidden" :value="old('id', $user->id)" required autofocus autocomplete="name" />
                                         <x-input-label for="first_name" :value="__('Prénom')" />
                                         <x-text-input id="first_name" name="first_name" type="text" class="mt-1 block w-full" :value="old('first_name', $user->first_name)" required autofocus autocomplete="first_name" />
                                         <x-input-error class="mt-2" :messages="$errors->get('first_name')" />
+                                       </div>
+                                    <div>
                                         <x-input-label for="last_name" :value="__('Nom')" />
-                                        <x-text-input id="last_name" name="first_name" type="text" class="mt-1 block w-full" :value="old('last_name', $user->last_name)" required autofocus autocomplete="last_name" />
+                                        <x-text-input id="last_name" name="last_name" type="text" class="mt-1 block w-full" :value="old('last_name', $user->last_name)" required autofocus autocomplete="last_name" />
                                         <x-input-error class="mt-2" :messages="$errors->get('last_name')" />
                                     </div>
-
                                     <div>
                                         <x-input-label for="email" :value="__('Email')" />
-                                        <x-text-input id="email" name="email" type="email" class="mt-1 block w-full" :value="old('email', $user->email)" required autocomplete="username" />
+                                        <x-text-input id="email" name="email" type="email" class="mt-1 block w-full" :value="old('email', $user->email)" required autocomplete="email" />
                                         <x-input-error class="mt-2" :messages="$errors->get('email')" />
-
-                                        @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! $user->hasVerifiedEmail())
-                                            <div>
-                                                <p class="text-sm mt-2 text-gray-800 dark:text-gray-200">
-                                                    {{ __("Votre adresse e-mail n'est pas vérifiée.") }}
-
-                                                    <button form="send-verification" class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800">
-                                                        {{ __("Cliquez ici pour renvoyer l'e-mail de vérification.") }}
-                                                    </button>
-                                                </p>
-
-                                                @if (session('status') === 'verification-link-sent')
-                                                    <p class="mt-2 font-medium text-sm text-green-600 dark:text-green-400">
-                                                        {{ __('Un nouveau lien de vérification a été envoyé à votre adresse e-mail.') }}
-                                                    </p>
-                                                @endif
-                                            </div>
-                                        @endif
                                     </div>
+                                    <div>
+                                        <x-input-label for="role" :value="__('Role')" />
+                                        <select name="role" id="role" class="border-gray-300 dark:border-gray-700 block mt-1 w-full dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">
+                                            <option value="student" {{ $user->role == 'student' ? 'selected' : '' }}>Étudiant</option>
+                                            <option value="teacher" {{ $user->role == 'teacher' ? 'selected' : '' }}>Professeur</option>
+                                            <option value="admin" {{ $user->role == 'admin' ? 'selected' : '' }}>Admin</option>
+                                        </select>
+                                        <x-input-error :messages="$errors->get('role')" class="mt-2" />
+                                    </div>
+                                    <div>
+                                        <x-input-label for="classe_id" :value="__('Classe')" />
+                                        <select name="classe_id" id="classe_id" class="border-gray-300 dark:border-gray-700 block mt-1 w-full dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm">@
+                                            @foreach($classes as $classe)
+                                                <option value="{{$classe->id}}" {{ $classe->id == $user->classe_id ? 'selected' : '' }}>
+                                                    {{$classe->name}}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                        <x-input-error :messages="$errors->get('role')" class="mt-2" />
+                                    </div>
+
+
 
                                     <div class="flex items-center gap-4">
                                         <x-primary-button>{{ __('Enregistrer') }}</x-primary-button>
@@ -102,8 +115,9 @@
                                         @endif
                                     </div>
                                 </form>
+                                </div>
                             </x-modal>
-                        </button> --->
+                        </button>
                         <button>
                                 <x-danger-button
                                     x-data=""
@@ -111,7 +125,8 @@
                                 > <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
                                         <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z"/>
                                     </svg></x-danger-button>
-                                <x-modal name="confirm-user-deletion-{{$user->id}}" :show="$errors->userDeletion->isNotEmpty()" focusable>
+                                <x-modal name="confirm-user-deletion-{{$user->id}}"  :show="$showModalUserDelete" focusable>
+
                                     <form method="post" action="{{ route('list-account.destroy') }}" class="p-6">
                                         @csrf
                                         @method('delete')

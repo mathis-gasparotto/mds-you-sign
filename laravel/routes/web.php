@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\CoursesController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -26,7 +27,6 @@ Route::prefix('/dashboard')->controller(CoursesController::class)->group(functio
 
 Route::prefix('/list-account')->middleware(['auth','verified','admin'])->controller(\App\Http\Controllers\ListController::class)->group(function (){
    Route::get('/','show')->name('list-account');
-   //Route::put('/', 'create')->name('list-account.create');
    Route::patch('/',  'update')->name('list-account.update');
    Route::delete('/','destroy')->name('list-account.destroy');
 });
@@ -51,9 +51,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
 });
-Route::get('/register-account',function (){
-    return view('register-account');
-})->middleware(['auth', 'verified'])->name('register-account');
+Route::get('/register-account',[RegisteredUserController::class, 'create'])->middleware(['auth', 'verified'])->name('register-account');
 
 require __DIR__.'/auth.php';
 

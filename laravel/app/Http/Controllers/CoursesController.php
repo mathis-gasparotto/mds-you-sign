@@ -16,12 +16,13 @@ class CoursesController extends Controller
         $id_user = session()->get('id');
         $user = User::find($id_user);
         //dd($id_user);
-        $lessons = Lesson::where('user_id', $id_user)->with('users')->get();
+        $lessons = Lesson::where('teacher_id', $id_user)->with('users')->get();
 
         return view('dashboard', ['user' => $user, 'lessons' => $lessons]);
     }
     public function showCourse(Request $request): View
     {
+
         $lesson_id = $request->id;
         $id_user = session()->get('id');
         $user = User::find($id_user);

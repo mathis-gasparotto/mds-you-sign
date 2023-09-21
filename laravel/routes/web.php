@@ -3,7 +3,6 @@
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\CoursesController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\SimpleQRcodeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,7 +22,7 @@ Route::get('/', function () {
 
 Route::prefix('/dashboard')->controller(CoursesController::class)->group(function () {
     Route::get('/', 'show')->name('dashboard')->middleware(['auth','verified']);
-    Route::get('/course', 'showCourse')->middleware(['auth','verified','teacher'])->name('course');
+    Route::get('/course/{id}', 'showCourse')->middleware(['auth','verified','teacher'])->name('course');
 });
 //Route::get("/course", [SimpleQRcodeController::class,'generate'])->name('dashboard')->middleware(['auth','verified','teacher']);;
 Route::prefix('/list-account')->middleware(['auth','verified','admin'])->controller(\App\Http\Controllers\ListController::class)->group(function (){

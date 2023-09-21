@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Lesson;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Illuminate\View\View;
 
 class LessonController extends Controller
@@ -13,6 +14,17 @@ class LessonController extends Controller
         $lessons = Lesson::with('teacher')->orderBy('label')->get();
         $teachers = User::where('role','teacher')->orderBy('first_name')->get();
         return view('lesson-creator', ['lessons' => $lessons,'teachers' =>$teachers ]);
+    }
+
+    public function index(): string
+    {
+        return Lesson::with('teacher')->orderBy('startAt')->get()->toJson(JSON_PRETTY_PRINT);
+    }
+
+    public function meToday(): string
+    {
+        $userClasse = auth()->user()->getClasse();
+        return Lesson::with('teacher')->where()->orderBy('startAt')->get()->toJson(JSON_PRETTY_PRINT);
     }
 
     public function destroy(Request $request): View{
@@ -30,7 +42,7 @@ class LessonController extends Controller
             'password' => ['required', 'current_password'],
         ]);
         $lesson_to_update = Lesson::find($request->id);
-        $lesson_to_update->update(['label' => $request->label, 'start_at' => $request->start_at,'end_at' => $request->end_at,'room' => $request->room,'user_id' => $request->user_id, 'updated_at' => now()]);
+        $lesson_to_update->update(['label' => $request->label, 'start_at' => $request->start_at,'end_at' => $request->end_at,'room' => $request->room,'teacher_id' => $request->teacher_id, 'updated_at' => now()]);
         $lesson_to_update->save();
         $lessons = Lesson::with('teacher')->orderBy('label')->get();
         $teachers = User::where('role','teacher')->orderBy('first_name')->get();
@@ -46,7 +58,7 @@ class LessonController extends Controller
             $newLesson->start_at = $request->start_at;
             $newLesson->end_at = $request->end_at;
             $newLesson->room = $request->room;
-            $newLesson->user_id = $request->user_id;
+            $newLesson->teacher_id = $request->user_id;
             $newLesson->signed_code = false;
             $newLesson->created_at = now();
             $newLesson->updated_at = now();

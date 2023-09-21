@@ -19,8 +19,18 @@
                 </div>
                 @if(session()->get('role') == 'admin')
                     <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                        <x-nav-link :href="route('register-account')" :active="request()->routeIs('register-account')">
-                            {{ __('Création compte') }}
+                        <x-nav-link :href="route('list-account')" :active="request()->routeIs('list-account')">
+                            {{ __(" Utilisateurs") }}
+                        </x-nav-link>
+                    </div>
+                    <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                        <x-nav-link :href="route('class-creator')" :active="request()->routeIs('class-creator')">
+                            {{ __(" Classes") }}
+                        </x-nav-link>
+                    </div>
+                    <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                        <x-nav-link :href="route('lesson-creator')" :active="request()->routeIs('lesson-creator')">
+                            {{ __(" Lessons") }}
                         </x-nav-link>
                     </div>
                 @endif
@@ -54,7 +64,7 @@
                             <x-dropdown-link :href="route('logout')"
                                     onclick="event.preventDefault();
                                                 this.closest('form').submit();">
-                                {{ __('Log Out') }}
+                                {{ __('Déconnexion') }}
                             </x-dropdown-link>
                         </form>
                     </x-slot>
@@ -100,7 +110,7 @@
                     <x-responsive-nav-link :href="route('logout')"
                             onclick="event.preventDefault();
                                         this.closest('form').submit();">
-                        {{ __('Log Out') }}
+                        {{ __('Déconnexion') }}
                     </x-responsive-nav-link>
                 </form>
             </div>

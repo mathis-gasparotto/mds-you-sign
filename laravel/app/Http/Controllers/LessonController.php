@@ -90,7 +90,7 @@ class LessonController extends Controller
          $user_lesson_students = LessonStudent::where('user_id',$user_associated_to_class->id)->get();
             //dd($user_lesson_students);
          if( $user_lesson_students->isNotEmpty()){
-            dd('pas ok');
+
             foreach ($user_lesson_students as $user_lesson_student){
                 //dd($user_lesson_student);
                 $user_lesson_student->update(['lesson_id' => $request->id]);

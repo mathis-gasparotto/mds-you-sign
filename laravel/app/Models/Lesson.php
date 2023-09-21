@@ -13,7 +13,7 @@ class Lesson extends Model
         'end_at',
         'label',
         'room',
-        'sign_code',
+        'signed_code',
         'user_id'
 
     ];

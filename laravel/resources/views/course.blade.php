@@ -35,9 +35,7 @@
                                                 {{ $users[0]->lesson->start_at }} - {{ $users[0]->lesson->end_at }}
                                             </p>
                                         </header>
-
-
-
+                                        {{$qrcode}}
                                     </div>
                                 </x-modal>
                             </button>

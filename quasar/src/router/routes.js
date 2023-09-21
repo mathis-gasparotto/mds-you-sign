@@ -44,6 +44,11 @@ const routes = [
         path: "signe/:id",
         name: "signe",
         component: () => import("pages/SignePage.vue")
+      },
+      {
+        path: "justifierAbsence",
+        name: "justifierAbsence",
+        component: () => import("pages/JustifierAbsencePage.vue")
       }
     ]
   },

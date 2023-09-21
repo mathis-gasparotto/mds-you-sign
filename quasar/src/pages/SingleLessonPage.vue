@@ -18,6 +18,10 @@
     <router-link :to="{ name: 'signe' }">
       <q-btn class="q-mt-xl" label="Signe & Scan" />
     </router-link>
+    <div class="signed-bar" v-if="singleLesson.signed">
+      <q-icon name="check" color="white" size="2rem" />
+      <span class="q-ml-sm">Signé</span>
+    </div>
   </q-page>
 </template>
 
@@ -69,14 +73,14 @@ export default {
       })
     },
     getDate(date) {
-      const dateObject = new Date(date);
-      const day = dateObject.getDate();
-      const month = dateObject.getMonth() + 1;
-      const year = dateObject.getFullYear();
+      const dateObject = new Date(date)
+      const day = dateObject.getDate()
+      const month = dateObject.getMonth() + 1
+      const year = dateObject.getFullYear()
 
       // Formater la date en "jj/mm/aaaa"
-      const formattedDate = `${day}/${month.toString().padStart(2, '0')}/${year}`;
-      return formattedDate;
+      const formattedDate = `${day}/${month.toString().padStart(2, '0')}/${year}`
+      return formattedDate
     }
   }
 }
@@ -89,5 +93,17 @@ export default {
       padding: 0;
       margin: 0;
     }
+  }
+  .signed-bar {
+    position: fixed;
+    bottom: 72px;
+    left: 0;
+    width: 100%;
+    height: 50px;
+    background-color: #3fbb43;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 </style>

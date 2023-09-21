@@ -9,7 +9,9 @@ class LessonStudent extends Model
 {
     use HasFactory;
     protected $fillable= [
+        'lesson_id',
         'signed',
+        'user_id',
     ];
     public function user()
     {

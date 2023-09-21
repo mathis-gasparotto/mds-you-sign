@@ -24,6 +24,26 @@ Route::prefix('/dashboard')->controller(CoursesController::class)->group(functio
     Route::get('/course', 'showCourse')->middleware(['auth','verified','teacher'])->name('course');
 });
 
+Route::prefix('/list-account')->middleware(['auth','verified','admin'])->controller(\App\Http\Controllers\ListController::class)->group(function (){
+   Route::get('/','show')->name('list-account');
+   //Route::put('/', 'create')->name('list-account.create');
+   Route::patch('/',  'update')->name('list-account.update');
+   Route::delete('/','destroy')->name('list-account.destroy');
+});
+Route::prefix('/class-creator')->middleware(['auth','verified','admin'])->controller(\App\Http\Controllers\ClassesController::class)->group(function (){
+    Route::get('/','show')->name('class-creator');
+    Route::put('/', 'create')->name('class-creator.create');
+    Route::patch('/',  'update')->name('class-creator.update');
+    Route::delete('/','destroy')->name('class-creator.destroy');
+});
+Route::prefix('/lesson-creator')->middleware(['auth','verified','admin'])->controller(\App\Http\Controllers\LessonController::class)->group(function (){
+    Route::get('/','show')->name('lesson-creator');
+    Route::put('/', 'create')->name('lesson-creator.create');
+    Route::patch('/',  'update')->name('lesson-creator.update');
+    Route::delete('/','destroy')->name('lesson-creator.destroy');
+});
+
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

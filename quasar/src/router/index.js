@@ -2,6 +2,7 @@ import { route } from 'quasar/wrappers'
 import { createRouter, createMemoryHistory, createWebHistory, createWebHashHistory } from 'vue-router'
 import routes from './routes'
 import { LocalStorage } from 'quasar'
+import { BarcodeScanner } from '@capacitor-community/barcode-scanner'
 
 /*
  * If not building with SSR mode, you can
@@ -30,13 +31,16 @@ export default route(function (/* { store, ssrContext } */) {
   Router.beforeEach(async(to, from, next) => {
     const isAuthenticated = LocalStorage.has('user')
     if (!isAuthenticated && to.name !== 'login') {
-      next({
+      return next({
         name: 'login'
       })
     } else if (isAuthenticated && to.name === 'login') {
-      next({
+      return next({
         name: from.name === 'login' ? 'home' : from.name
       })
+    } else if (isAuthenticated && from.name === 'signeScan') {
+      BarcodeScanner.stopScan()
+      return next()
     } else {
       return next()
     }

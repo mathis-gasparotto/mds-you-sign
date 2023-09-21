@@ -11,6 +11,9 @@
     name: 'SigneScan',
     created () {
       this.startScan()
+      document.addEventListener('ionBackButton', (ev) => {
+        BarcodeScanner.stopScan()
+      })
     },
     setup () {
       const route = useRoute()

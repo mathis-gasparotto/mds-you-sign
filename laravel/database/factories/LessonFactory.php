@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Classe;
 use App\Models\Lesson;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -15,6 +16,7 @@ class LessonFactory extends Factory
      * Define the model's default state.
      *
      * @return array<string, mixed>
+     * @throws \Exception
      */
     public function definition(): array
     {
@@ -24,8 +26,11 @@ class LessonFactory extends Factory
             'label' => fake()->city,
             'room' => random_int(1,10),
             'signed_code' => false,
-            'user_id' => function () {
+            'teacher_id' => function () {
                 return User::where('role', 'teacher')->inRandomOrder()->first()->id;
+            },
+            'classe_id' => function () {
+                return Classe::all()->random()->id;
             },
         ];
 

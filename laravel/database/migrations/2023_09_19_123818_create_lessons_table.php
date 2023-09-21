@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -20,7 +21,7 @@ return new class extends Migration
             $table->string('room');
             $table->integer('signed_code');
             $table->timestamps();
-            $table->foreignIdFor(\App\Models\User::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(User::class, 'teacher_id')->constrained()->cascadeOnDelete()->references('id')->on('users');
             //$table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
 

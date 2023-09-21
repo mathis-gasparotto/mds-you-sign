@@ -15,9 +15,11 @@
     </ul>
     <h6>Description</h6>
     <p>MBA1 Développeur Full-Stack</p>
+    <div class="contain-btn" v-if="!singleLesson.signed">
     <router-link :to="{ name: 'signe' }">
-      <q-btn class="q-mt-xl" label="Signe & Scan" />
+      <q-btn class="btn-signe" label="Signe & Scan" />
     </router-link>
+    </div>
     <div class="signed-bar" v-if="singleLesson.signed">
       <q-icon name="check" color="white" size="2rem" />
       <span class="q-ml-sm">Signé</span>
@@ -106,4 +108,18 @@ export default {
     align-items: center;
     justify-content: center;
   }
+  .contain-btn {
+    position: absolute;
+    left:5px;
+    right: 5px;
+    bottom: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+  .btn-signe {
+    color: black;
+    padding: 10px 30vw;
+    background-color: rgb(226, 226, 0);
+}
 </style>

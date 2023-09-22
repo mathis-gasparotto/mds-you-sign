@@ -89,6 +89,19 @@
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
+            @if(session()->get('role') == 'admin')
+                    <x-responsive-nav-link  :href="route('list-account')" :active="request()->routeIs('list-account')">
+                        {{ __(" Utilisateurs") }}
+                    </x-responsive-nav-link>
+                    <x-responsive-nav-link :href="route('class-creator')" :active="request()->routeIs('class-creator')">
+                        {{ __(" Classes") }}
+                    </x-responsive-nav-link>
+                    <x-responsive-nav-link :href="route('lesson-creator')" :active="request()->routeIs('lesson-creator')">
+                        {{ __(" Lessons") }}
+                    </x-responsive-nav-link>
+
+            @endif
+
         </div>
 
         <!-- Responsive Settings Options -->

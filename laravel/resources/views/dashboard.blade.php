@@ -15,12 +15,16 @@
 
                         <div class="card py-10">
                             @foreach( $lessons as $lesson)
-                                <div class="card py-10 ">
+                                <div class="card py-10 flex justify-center text-center">
+
                                     <a href={{ route('course', ['id' => $lesson->id]) }}>
-                                        {{$lesson->label}}
-                                        <span>   {{$lesson->start_at}} - {{$lesson->end_at}} </span>
-                                        <span> nb etu {{$lesson->users->count()}} </span>
-                                        <span> classe </span>
+                                        {{substr($lesson->start_at, 0, 10) }} <br>
+                                        {{$lesson->label}} <br>
+                                        <span>   {{substr($lesson->start_at, 10, 11) }} - {{substr($lesson->end_at, 10, 11) }} </span>
+                                        <br>
+
+                                        <span>{{$lesson->users->count()}} étudiants </span>
+
                                         <br>
                                     </a>
                                 </div>

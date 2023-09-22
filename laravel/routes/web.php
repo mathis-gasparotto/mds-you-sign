@@ -23,6 +23,9 @@ Route::get('/', function () {
 Route::prefix('/dashboard')->controller(CoursesController::class)->group(function () {
     Route::get('/', 'show')->name('dashboard')->middleware(['auth','verified']);
     Route::get('/course/{id}', 'showCourse')->middleware(['auth','verified','teacher'])->name('course');
+    Route::get('/qrcode/{id}', 'qrCode')->middleware(['auth','verified','teacher'])->name('qrcodeupdate');
+
+
 });
 //Route::get("/course", [SimpleQRcodeController::class,'generate'])->name('dashboard')->middleware(['auth','verified','teacher']);;
 Route::prefix('/list-account')->middleware(['auth','verified','admin'])->controller(\App\Http\Controllers\ListController::class)->group(function (){
@@ -42,7 +45,6 @@ Route::prefix('/lesson-creator')->middleware(['auth','verified','admin'])->contr
     Route::patch('/',  'update')->name('lesson-creator.update');
     Route::delete('/','destroy')->name('lesson-creator.destroy');
 });
-
 
 
 Route::middleware('auth')->group(function () {

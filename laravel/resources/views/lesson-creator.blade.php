@@ -1,4 +1,9 @@
 <x-app-layout>
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight ">
+            {{ __('Lessons') }}
+        </h2>
+    </x-slot>
     <div class="w-full py-10 sm:px-12 px-3">
         <div class="text-center w-full pb-6">
         <button class="w-full">
@@ -118,7 +123,7 @@
 
                     </td>
                     <td class="text-ledt py-5">
-                        de {{$lesson->start_at}} à {{$lesson->end_at}}
+                        le {{ substr($lesson->start_at,0,10)}} <br> de {{substr($lesson->start_at,10,11)}} à {{substr($lesson->end_at,10,11)}}
                     </td>
                     <td class="text-ledt py-5">
                         {{$lesson->room}}

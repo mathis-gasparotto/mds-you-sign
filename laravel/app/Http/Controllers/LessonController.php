@@ -79,8 +79,13 @@ class LessonController extends Controller
         $lessonIds = [];
         foreach ($lessonStudents as $lessonStudent) {
             $lessonIds[] = $lessonStudent->lesson_id;
+            $lessonSigned[$lessonStudent->lesson_id] = $lessonStudent->signed;
         }
-        return new JsonResponse(Lesson::with('teacher')->whereDate('start_at', '=', $now->format('Y-m-d'))->orderBy('start_at', 'desc')->findMany($lessonIds));
+        $lessons = Lesson::whereDate('start_at', '=', $now->format('Y-m-d'))->orderBy('start_at', 'asc')->findMany($lessonIds)->toArray();
+        foreach ($lessons as $index => $lesson) {
+            $lessons[$index]['signed'] = $lessonSigned[$lesson['id']];
+        }
+        return new JsonResponse($lessons);
 
     }
 

@@ -97,6 +97,7 @@ export default {
       api.post('/login', this.form)
         .then((response) => {
           this.loading = false
+          api.defaults.headers.common['Authorization'] = 'Bearer ' + response.data.token
           LocalStorage.set('token', response.data.token)
           LocalStorage.set('user', response.data.user)
           this.$router.push({ name: 'home' })

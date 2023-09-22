@@ -7,6 +7,7 @@ use App\Models\Classe;
 use App\Models\Lesson;
 use App\Models\LessonStudent;
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\View\View;
@@ -20,7 +21,7 @@ class LessonController extends Controller
         return view('lesson-creator', ['lessons' => $lessons,'teachers' =>$teachers ,'classes' => $classes]);
     }
 
-    public function future(Request $request): string
+    public function future(Request $request): JsonResponse
     {
         $now = new \DateTime();
         $now->setTimezone(new \DateTimeZone('Europe/Paris'));
@@ -29,10 +30,10 @@ class LessonController extends Controller
         foreach ($lessonStudents as $lessonStudent) {
             $lessonIds[] = $lessonStudent->lesson_id;
         }
-        return Lesson::with('teacher')->whereDate('start_at', '>', $now->format('Y-m-d'))->orderBy('start_at', 'desc')->findMany($lessonIds)->toJson();
+        return new JsonResponse(Lesson::with('teacher')->whereDate('start_at', '>', $now->format('Y-m-d'))->orderBy('start_at', 'desc')->findMany($lessonIds));
     }
 
-    public function getItem(Request $request, $id): string
+    public function getItem(Request $request, $id): JsonResponse
     {
         $lesson = Lesson::find($id);
         if(!$lesson) {
@@ -40,16 +41,36 @@ class LessonController extends Controller
                 'message' => 'Lesson not found'
             ], 404);
         }
-        $classe = Classe::find($lesson->classe_id);
-        $teacher = User::find($lesson->teacher_id);
+        $classe = $lesson->classe_id ? Classe::find($lesson->classe_id) : null;
+        $teacher = $lesson->teacher_id ? User::find($lesson->teacher_id) : null;
         $signed = LessonStudent::where('lesson_id', '=', $lesson->id)->where('user_id', '=', $request->user()->id)->first()->signed;
         $lesson->teacher = $teacher;
         $lesson->classe = $classe;
         $lesson->signed = $signed;
-        return $lesson->toJson();
+        return new JsonResponse($lesson);
     }
 
-    public function today(Request $request): string
+    public function scan(Request $request, $id): JsonResponse
+    {
+        $lesson = Lesson::find($id);
+        if(!$lesson) {
+            return response()->json([
+                'message' => 'Lesson not found'
+            ], 404);
+        }
+        $code = $request->code;
+        if($code != $lesson->signed_code) {
+            return response()->json([
+                'message' => 'Wrong code'
+            ], 403);
+        }
+        $lessonStudent = LessonStudent::where('lesson_id', '=', $lesson->id)->where('user_id', '=', $request->user()->id)->first();
+        $lessonStudent->signed = true;
+        $lessonStudent->save();
+        return new JsonResponse(['message' => 'Signed']);
+    }
+
+    public function today(Request $request): JsonResponse
     {
         $now = new \DateTime();
         $now->setTimezone(new \DateTimeZone('Europe/Paris'));
@@ -59,7 +80,7 @@ class LessonController extends Controller
         foreach ($lessonStudents as $lessonStudent) {
             $lessonIds[] = $lessonStudent->lesson_id;
         }
-        return Lesson::with('teacher')->whereDate('start_at', '=', $now->format('Y-m-d'))->orderBy('start_at', 'desc')->findMany($lessonIds)->toJson();
+        return new JsonResponse(Lesson::with('teacher')->whereDate('start_at', '=', $now->format('Y-m-d'))->orderBy('start_at', 'desc')->findMany($lessonIds));
 
     }
 

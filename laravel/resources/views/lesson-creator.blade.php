@@ -8,7 +8,7 @@
                 x-on:click.prevent="$dispatch('open-modal', 'confirm-class-create')"
             >
                 <p class="text-center">
-                    Creer une lesson
+                    Créer une lesson
                 </p>
             </x-danger-button>
             <x-modal name="confirm-class-create" :show="$errors->lessonCreation->isNotEmpty()" focusable>

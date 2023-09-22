@@ -57,7 +57,8 @@
 </template>
 
 <script>
-import { LocalStorage } from 'quasar'
+import { LocalStorage, Notify } from 'quasar'
+import { api } from 'boot/axios'
 
 export default {
   name: 'LoginPage',
@@ -91,13 +92,33 @@ export default {
     }
   },
   methods: {
-    onsubmit() {
+    async onsubmit() {
       this.loading = true
-      setTimeout(() => {
-        this.loading = false
-        LocalStorage.set('user', {email: this.form.email})
-        this.$router.push({ name: 'home' })
-      }, 1000)
+      api.post('/login', this.form)
+        .then((response) => {
+          this.loading = false
+          LocalStorage.set('token', response.data.token)
+          LocalStorage.set('user', response.data.user)
+          this.$router.push({ name: 'home' })
+        })
+        .catch((e) => {
+          this.loading = false
+          if (e.response && e.response.data.message === 'These credentials do not match our records.') {
+            Notify.create({
+              color: 'negative',
+              position: 'top',
+              message: 'Identifiants incorrects',
+              icon: 'report_problem'
+            })
+          } else {
+            Notify.create({
+              color: 'negative',
+              position: 'top',
+              message: 'Une erreur est survenue',
+              icon: 'report_problem'
+            })
+          }
+        })
     }
   }
 }

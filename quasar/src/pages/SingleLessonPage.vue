@@ -1,28 +1,31 @@
 <template>
   <q-page class="flex page-container column">
-    <!-- Bouton de retour -->
-    <q-btn
-      class="q-mb-xl"
-      @click="$router.go(-1)"
-      label="Retour"
-    />
-    <ul class="lessons-list">
-      <li class="lessons-item q-mb-md">
-        <CardComponent :title="`${getHours(singleLesson.startAt)} - ${getHours(singleLesson.endAt)}`" :description="`${getDate(singleLesson.startAt)}`" iconPath="assets/alarm.png" />
-        <CardComponent :title="singleLesson.room" description="Salle" iconPath="assets/room.png" />
-        <CardComponent :title="singleLesson.teacher" description="Intervenant" iconPath="assets/teacher.png" />
-      </li>
-    </ul>
-    <h6>Description</h6>
-    <p>MBA1 Développeur Full-Stack</p>
-    <div class="contain-btn" v-if="!singleLesson.signed">
-    <router-link :to="{ name: 'signe' }">
-      <q-btn class="btn-signe" label="Signe & Scan" />
-    </router-link>
-    </div>
-    <div class="signed-bar" v-if="singleLesson.signed">
-      <q-icon name="check" color="white" size="2rem" />
-      <span class="q-ml-sm">Signé</span>
+    <q-spinner-gears size="100px" color="primary" v-if="loading"></q-spinner-gears>
+    <div v-else>
+      <!-- Bouton de retour -->
+      <q-btn
+        class="q-mb-xl"
+        @click="$router.go(-1)"
+        label="Retour"
+      />
+      <ul class="lessons-list">
+        <li class="lessons-item q-mb-md">
+          <CardComponent :title="`${getHours(singleLesson.start_at)} - ${getHours(singleLesson.end_at)}`" :description="`${getDate(singleLesson.start_at)}`" iconPath="assets/alarm.png" />
+          <CardComponent :title="singleLesson.room" description="Salle" iconPath="assets/room.png" />
+          <CardComponent :title="singleLesson.teacher.last_name + '' + singleLesson.teacher.first_name" description="Intervenant" iconPath="assets/teacher.png" />
+        </li>
+      </ul>
+      <h6>Description</h6>
+      <p>MBA1 Développeur Full-Stack</p>
+      <div class="contain-btn" v-if="!singleLesson.signed">
+      <router-link :to="{ name: 'signe' }">
+        <q-btn class="btn-signe" label="Signe & Scan" />
+      </router-link>
+      </div>
+      <div class="signed-bar" v-if="singleLesson.signed">
+        <q-icon name="check" color="white" size="2rem" />
+        <span class="q-ml-sm">Signé</span>
+      </div>
     </div>
   </q-page>
 </template>
@@ -30,6 +33,7 @@
 <script>
 import { useRoute } from 'vue-router'
 import CardComponent from 'components/CardComponent.vue'
+import { api } from 'boot/axios'
 
 export default {
   name: 'SingleLessonPage',
@@ -58,13 +62,21 @@ export default {
     }
   },
   created() {
-    this.loading = false
-    // fetch('https://jsonplaceholder.typicode.com/posts')
-    //   .then((response) => response.json())
-    //   .then((json) => {
-    //     this.todayLessons = json
-    //     this.loading = false
-    //   })
+    this.loading = true
+    api.get(`/lessons/${this.route.params.id}`)
+      .then((response) => {
+        this.loading = false
+        this.singleLesson = response.data
+      })
+      .catch((e) => {
+        this.loading = false
+        Notify.create({
+          color: 'negative',
+          position: 'top',
+          message: 'Une erreur est survenue',
+          icon: 'report_problem'
+        })
+      })
   },
   methods: {
     getHours (date) {

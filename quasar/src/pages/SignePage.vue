@@ -12,8 +12,8 @@
     <div class="contain-btn">
       <q-btn class="suppr" @click="undo">Effacer</q-btn>
     </div>
-    <p>Je signe en tant que {{ user.name }}</p>
-    <p>{{ user.mail }}</p>
+    <p>Je signe en tant que {{ `${user.first_name} ${user.last_name}` }}</p>
+    <p>{{ user.email }}</p>
     <div class="contain-btn">
       <router-link :to="{ name: 'signeScan' }">
         <q-btn :class="`q-mt-xl save btn btn-${isEmpty ? 'disabled' : 'secondary'}`" label="Sauvegarder" text-color="white"  :disable="isEmpty" />
@@ -25,6 +25,7 @@
 <script>
 import { useRoute } from 'vue-router'
 import { VueSignaturePad } from 'vue-signature-pad'
+import { LocalStorage } from 'quasar'
 
 export default {
   name: 'SignePage',
@@ -38,7 +39,6 @@ export default {
   },
   data() {
     return {
-      loading: true,
       user: {
         id: 1,
         name: 'Jade Gurnaud',
@@ -48,13 +48,7 @@ export default {
     }
   },
   created() {
-    this.loading = false
-    // fetch('https://jsonplaceholder.typicode.com/posts')
-    //   .then((response) => response.json())
-    //   .then((json) => {
-    //     this.todayLessons = json
-    //     this.loading = false
-    //   })
+    this.user = LocalStorage.getItem('user')
   },
   methods: {
     undo() {

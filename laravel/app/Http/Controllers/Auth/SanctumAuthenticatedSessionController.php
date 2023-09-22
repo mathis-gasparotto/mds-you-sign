@@ -25,6 +25,7 @@ class SanctumAuthenticatedSessionController extends Controller
         $request->authenticate();
 
         $user = User::where('email', $request->email)->first();
+        $payload['user'] = $user;
         $payload['token'] = explode("|",$user->createToken('auth_token')->plainTextToken)[1];
         return new JsonResponse($payload);
     }

@@ -6,6 +6,8 @@
   <script>
   import { BarcodeScanner } from '@capacitor-community/barcode-scanner'
   import { useRoute } from 'vue-router'
+  import { api } from 'boot/axios'
+  import { Notify } from 'quasar'
 
   export default {
     name: 'SigneScan',
@@ -36,7 +38,24 @@
 
         // if the result has content
         if (result.hasContent) {
-          await console.log('Decoded', result.content)
+          await api.post(`/lessons/${this.route.params.id}/scan`, { code: result.content })
+            .catch((e) => {
+              if (e.response.data.message === 'Wrong code') {
+                Notify.create({
+                  color: 'negative',
+                  position: 'top',
+                  message: 'Le QR Code est invalide',
+                  icon: 'report_problem'
+                })
+              } else {
+                Notify.create({
+                  color: 'negative',
+                  position: 'top',
+                  message: 'Une erreur est survenue',
+                  icon: 'report_problem'
+                })
+              }
+            })
           this.$router.push({ name: 'singleLesson', params: { id: this.route.params.id } })
         }
       }

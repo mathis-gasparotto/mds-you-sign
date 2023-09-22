@@ -1,5 +1,9 @@
 <x-app-layout>
-
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight ">
+            {{ __('Classes') }}
+        </h2>
+    </x-slot>
     <div class="w-full py-6 sm:px-12 px-3">
         <div class="text-center w-full pb-6">
         <button class="w-full">
@@ -62,6 +66,7 @@
             <tr class="text-center">
                 <th class="text-left">Nom</th>
                 <th class="text-left">Date de création</th>
+                <th class="text-left">Date de MAJ</th>
                 <th class="text-center">Action</th>
             </tr>
             </thead>

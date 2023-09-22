@@ -16,7 +16,7 @@
                 <div class="p-3">
                     <header>
                         <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-                            {{ __('Creer une classe') }}
+                            {{ __('Créer une classe') }}
                         </h2>
                     </header>
                     <form method="post" action="{{ route('class-creator.create') }}" class="mt-6 space-y-6">

@@ -106,6 +106,6 @@
                      }
 
             // Appelez la fonction updateQRCode toutes les 15 secondes
-            setInterval(updateQRCode, 1000); // 15000 millisecondes = 15 secondes
+            setInterval(updateQRCode, 7000); // 15000 millisecondes = 15 secondes
         </script>
 </x-app-layout>

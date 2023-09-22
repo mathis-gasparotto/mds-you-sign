@@ -4,11 +4,12 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Laravel</title>
+        <title>Edusign</title>
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
+        <link rel="icon" type="image/png" href="{{ asset('logo.png') }}" />
 
         <!-- Styles -->
         <style>
@@ -27,12 +28,12 @@
                 </div>
             @endif
 
-            
+
             <div class="text-center">
                 <h1 class="title">EduSign</h1>
                 <img src="{{ asset('logo.png') }}" alt="EduSign">
-            </div>                
-            
+            </div>
+
         </div>
     </body>
 </html>
@@ -50,8 +51,8 @@
 .title {
     color: #fcc404;
     margin-bottom: 8vh;
-    font-family: Verdana, Georgia, sans-serif; 
-    font-size: 34px; 
+    font-family: Verdana, Georgia, sans-serif;
+    font-size: 34px;
     font-weight: bold;
 }
 

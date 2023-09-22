@@ -72,7 +72,6 @@
             </thead>
             @foreach( $classes as $classe)
                 @php
-                    print(request('id',''));
                     $showModalClasseDelete = $errors->userDeletion->isNotEmpty() &&  old('id') == $classe->id;
                      $showModalClasseUpdate = $errors->classeDeletion->isNotEmpty() &&  old('id') == $classe->id;
                 @endphp
